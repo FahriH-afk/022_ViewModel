@@ -39,9 +39,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cek.Data.DataForm
+import com.example.cek.Data.DataSource.info
 import com.example.cek.Data.DataSource.jenis
 import com.example.cek.ui.theme.CekTheme
 import com.example.cek.ui.theme.CobaViewModel
@@ -86,6 +86,8 @@ fun TampilLayout(
 fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
+    var textEmail by remember { mutableStateOf("") }
+    var textAlamat by remember { mutableStateOf("") }
 
     val  context = LocalContext.current
     val dataForm : DataForm
@@ -113,20 +115,44 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textTlp = it
         }
     )
-    SelectJK(
+    OutlinedTextField(
+        value = textEmail,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Masukkan Email")},
+        onValueChange = {
+            textEmail = it
+        }
+    )
+    pilihJK(
         options = jenis.map { id -> context.resources.getString(id)},
         onSelectionChanged = { cobaViewModel.setJk(it)})
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.BacaData(textNama,textTlp,dataForm.gender)
+            cobaViewModel.BacaData(textNama,textTlp,textEmail,textAlamat,dataForm.gender,dataForm.stat)
         }
-    ) {
+    )
+    {
         Text(
             text = stringResource(R.string.submit),
             fontSize = 16.sp
         )
     }
+    pilihSts(
+        options = info.map {id -> context.resources.getString(id)},
+        onSelectionChanged = {cobaViewModel.setSts(it)})
+    OutlinedTextField(
+        value = textAlamat,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Dimana Rumah Kamu?")},
+        onValueChange = {
+            textAlamat = it
+        }
+    )
     Spacer(modifier = Modifier.height(100.dp))
     TextHasil(
         namanya = cobaViewModel.namaUsr,
@@ -136,7 +162,40 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
 }
 
 @Composable
-fun SelectJK (
+fun pilihJK (
+    options: List<String>,
+    onSelectionChanged: (String) -> Unit = {}
+) {
+    var selectedValue by rememberSaveable { mutableStateOf("") }
+
+    Column (modifier = Modifier.padding(16.dp)) {
+        options.forEach { item ->
+            Row (
+                modifier = Modifier.selectable(
+                    selected = selectedValue == item,
+                    onClick = {
+                        selectedValue = item;
+                        onSelectionChanged(item)
+                    }
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = selectedValue == item ,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChanged(item)
+                    }
+                )
+                Text(item)
+            }
+        }
+    }
+
+}
+
+@Composable
+fun pilihSts (
     options: List<String>,
     onSelectionChanged: (String) -> Unit = {}
 ) {

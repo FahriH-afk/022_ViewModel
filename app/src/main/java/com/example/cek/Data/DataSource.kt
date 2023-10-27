@@ -6,4 +6,8 @@ object DataSource {
         R.string.pria,
         R.string.wanita,
     )
+    val info = listOf(
+        R.string.belummenikah,
+        R.string.Kawin,
+    )
 }

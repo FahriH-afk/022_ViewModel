@@ -3,4 +3,6 @@
     <string name="pria">Pria</string>
     <string name="wanita">Wanita</string>
     <string name="submit">Submit</string>
+    <string name="Kawin">Menikah</string>
+    <string name="belummenikah">Belum Menikah</string>
 </resources>
