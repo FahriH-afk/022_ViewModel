@@ -125,21 +125,9 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textEmail = it
         }
     )
-    pilihJK(
+    pilihJK (
         options = jenis.map { id -> context.resources.getString(id)},
         onSelectionChanged = { cobaViewModel.setJk(it)})
-    Button(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            cobaViewModel.BacaData(textNama,textTlp,textEmail,textAlamat,dataForm.gender,dataForm.stat)
-        }
-    )
-    {
-        Text(
-            text = stringResource(R.string.submit),
-            fontSize = 16.sp
-        )
-    }
     pilihSts(
         options = info.map {id -> context.resources.getString(id)},
         onSelectionChanged = {cobaViewModel.setSts(it)})
@@ -153,6 +141,18 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textAlamat = it
         }
     )
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            cobaViewModel.BacaData(textNama,textTlp,textEmail,textAlamat,dataForm.gender,dataForm.stat)
+        }
+    )
+    {
+        Text(
+            text = stringResource(R.string.submit),
+            fontSize = 16.sp
+        )
+    }
     Spacer(modifier = Modifier.height(100.dp))
     TextHasil(
         jenissnya = cobaViewModel.jenisKL,
@@ -269,6 +269,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     CekTheme {
-        TampilForm()
+        TampilLayout()
     }
 }
